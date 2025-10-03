@@ -1,4 +1,4 @@
-# How has the relationship between female and male per capita consumption evolved in Belarus between 2000 and 2020?
+# How has the relationship between female and male per capita alcohol consumption evolved in Belarus between 2000 and 2020?
 
 ## Abstract
 
@@ -6,7 +6,7 @@ Using World Bank World Development Indicators (WDI), this study examines the evo
 
 ## 1. Question
 
-How has the relationship between female and male per capita consumption evolved in Belarus between 2000 and 2020?
+How has the relationship between female and male per capita alcohol consumption evolved in Belarus between 2000 and 2020?
 
 - **Female proxy**: Female alcohol consumption per capita
 - **Male proxy**: Male alcohol consumption per capita
