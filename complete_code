@@ -1,0 +1,51 @@
+# How has the relationship between female and male per capita consumption evolved in Belarus between 2000 and 2020?
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import os
+
+# Folders
+data_raw_folder = "data_raw/"
+data_clean_folder = "data_clean/"
+figures_folder = "figures/"
+
+# Load CSV
+filename = "health_blr_filtered.csv"  # Filtered dataset with only relevant rows
+df = pd.read_csv(os.path.join(data_raw_folder, filename))
+
+# Keep only needed columns
+df = df[["Year", "Indicator Name", "Value"]]
+
+# Convert Year and Value to numeric, drop invalid rows
+df["Year"] = pd.to_numeric(df["Year"], errors="coerce")
+df["Value"] = pd.to_numeric(df["Value"], errors="coerce")
+df = df.dropna(subset=["Year", "Value"])
+
+# Pivot indicators into separate columns
+df_pivot = df.pivot(index="Year", columns="Indicator Name", values="Value").reset_index()
+df_pivot = df_pivot.sort_values("Year")
+
+print("Pivoted Belarus dataset:")
+display(df_pivot)
+
+# Interpolate missing values for smooth plotting (optional)
+df_plot = df_pivot.interpolate(method='linear')
+
+# Plot the two indicators
+plt.figure(figsize=(10,6))
+plt.plot(df_plot["Year"], df_plot["Total alcohol consumption per capita, female (liters of pure alcohol, projected estimates, female 15+ years of age)"], 
+         marker='o', linestyle='-', label="Total female alcohol consumption per capita")
+plt.plot(df_plot["Year"], df_plot["Total alcohol consumption per capita, male (liters of pure alcohol, projected estimates, male 15+ years of age)"], 
+         marker='o', linestyle='-', label="Total male alcohol consumption per capita")
+
+plt.title("Belarus: Total Female vs Total Male Alcohol Consumption (Liters of pure alcohol) (2000-2020)")
+plt.xlabel("Year")
+plt.ylabel("Liters")
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.savefig(os.path.join(figures_folder, "belarus_total_female_vs_total_male_alcohol_consumption.png"))
+plt.show()
+
+# Save cleaned CSV
+df_pivot.to_csv(os.path.join(data_clean_folder, "belarus_total_female_vs_total_male_alcohol_consumption"), index=False)
